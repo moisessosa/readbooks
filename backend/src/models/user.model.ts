@@ -58,22 +58,38 @@ export const login = async (req: Request, res: Response) => {
   if (checkPass) {
     const token = jwt.sign(
       {
-        nombre: user,
+        name: user,
       },
       `${KEY}`,
       { expiresIn: 3600 }
     );
 
     res.json({
-      nombre: user,
+      name: user,
       token: token,
       message: "Contraseña valida",
     });
   } else {
     return res.json({
-      nombre: user,
+      name: user,
       token: "invalido",
       message: "Contraseña Invalida",
     });
   }
 };
+
+export const upWallet = async (req:Request, res:Response) => {
+  const {id_user, wallet, user_wallet_name, user_wallet_other_data}= req.body;
+  if(id_user && wallet && user_wallet_name){
+    try {
+      const result = await pool.query("INSERT INTO wallets (id_user, wallet, user_wallet_name, user_wallet_other_data) values ($1,$2,$3,$4) Returning *",
+      [id_user, wallet, user_wallet_name, user_wallet_other_data]);
+      return res.json(result.rows);
+    } catch (error) {
+      return res.status(400).json({ message: `${error}`})
+    }
+  }else{
+    return res.status(400).json({ msg: "Faltan datos" });
+  }
+  
+}

@@ -80,3 +80,16 @@ export const uploadComment = async (req: Request, res: Response) => {
     return res.status(400).json({ msg: "Faltan datos" });
   }
 };
+export const voteChapter = async (req: Request, res: Response) => {
+  const { id_user, id_book, id_chapter, score, note } = req.body;
+  if (id_user && id_book && id_chapter && score) {
+    const result = await pool.query(
+      "INSERT INTO scores_chapter (id_user, id_book, id_chapter, score, note)" +
+        "values($1,$2,$3,$4,$5) RETURNING *",
+      [id_user, id_book, id_chapter, score, note]
+    );
+    return res.json(result.rows);
+  } else {
+    return res.status(400).json({ msg: "Faltan datos" });
+  }
+};

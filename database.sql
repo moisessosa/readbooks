@@ -91,6 +91,8 @@ CREATE TABLE scores_chapter(
     CONSTRAINT fk_chapters_id_chapter FOREIGN KEY(id_chapter)
         REFERENCES chapters (id_chapter)
     );
+
+    -- tenho que cria a tabla followers?
 CREATE TABLE subscriptions(
     id_subscrition SERIAL UNIQUE PRIMARY key,
     id_user INT,--subcritor
@@ -124,7 +126,7 @@ CREATE TABLE wallets(
     user_wallet_other_data VARCHAR(250),
     CONSTRAINT fk_users_id_user FOREIGN KEY (id_user)
         REFERENCES users(id_user)
-);
+);--user.model 
 
 CONSTRAINT fk_nombreTabla_nombreID FOREIGN KEY (nombreID)
       REFERENCES nombreTabla (nombreID)
